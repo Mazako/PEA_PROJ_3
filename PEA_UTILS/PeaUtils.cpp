@@ -14,7 +14,8 @@ int PeaUtils::randomInt() {
     return randomInt(INT32_MAX);
 }
 
-int PeaUtils::randomInt(int range) {
+int PeaUtils::randomInt(int range) { // RANGE IS EXCLUSIVE
+    range--;
     std::random_device device;
     std::mt19937 rng(device());
     std::uniform_int_distribution<> distribution(0, range);
@@ -371,6 +372,16 @@ long long PeaUtils::readPathAndCalculateCost(TspMatrix *matrix, std::string file
     auto cost =  matrix->calculateCost(path);
     delete[] path;
     return cost;
+}
+
+std::pair<int, int> PeaUtils::randomTwoInt(int range) {
+    int i = randomInt(range);
+    int j = randomInt(range);
+
+    while (i == j) {
+        j = randomInt(range);
+    }
+    return std::pair<int, int>(i, j);
 }
 
 PeaUtils::PeaUtils() = default;

@@ -36,6 +36,8 @@ public:
 
     static double randomFormalDouble();
 
+    static std::pair<int, int> randomTwoInt(int range);
+
     static TspMatrix* generateRandomTSPInstance(int n);
 
     static std::string matrixToString(const TspMatrix* tspMatrix);
