@@ -66,7 +66,9 @@ public:
 
     static std::string saveResultsToFile(int n, int *path, std::string matrixName, std::string methodPrefix);
 
-    static void saveLogsToFile(std::vector<std::string> logs, std::string fileName);
+    static std::string generateRandomFileName(std::string method, std::string matrixName);
+
+    static void saveLogsToFile(std::vector<std::string> logs, std::string method, std::string matrix);
 
     static long long readPathAndCalculateCost(TspMatrix* matrix, std::string filename);
 

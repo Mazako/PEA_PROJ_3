@@ -289,22 +289,7 @@ int **PeaUtils::generateEmptyMatrix(int n) {
 }
 
 std::string PeaUtils::saveResultsToFile(int n, int *path, std::string matrixName, std::string methodPrefix) {
-    std::string fileName;
-    fileName.append(methodPrefix).append("_");
-    fileName.append(matrixName);
-    auto now = std::chrono::system_clock::now();
-    auto now_c = std::chrono::system_clock::to_time_t(now);
-    auto parts = std::localtime(&now_c);
-    auto year = std::to_string(1900 + parts->tm_year);
-    auto month = std::to_string(1 + parts->tm_mon);
-    auto day = std::to_string(parts->tm_mday);
-    auto hour = std::to_string(parts->tm_hour);
-    auto minute = std::to_string(parts->tm_min);
-    auto second = std::to_string(parts->tm_sec);
-    fileName.append("_").append(year).append("_").append(month)
-            .append("_").append(day).append("_").append(hour)
-            .append("_").append(minute).append("_").append(second).append(".txt");
-
+    std::string fileName = generateRandomFileName(methodPrefix, matrixName);
     std::fstream fileStream;
     fileStream.open(fileName, std::ios::out);
     fileStream << n << "\n";
@@ -316,7 +301,26 @@ std::string PeaUtils::saveResultsToFile(int n, int *path, std::string matrixName
     return fileName;
 }
 
-void PeaUtils::saveLogsToFile(std::vector<std::string> logs, std::string fileName) {
+std::string PeaUtils::generateRandomFileName(std::string method, std::string matrixName) {
+    std::string fileName;
+    fileName.append(method).append("_");
+    fileName.append(matrixName);
+    auto now = std::chrono::system_clock::now();
+    auto now_c = std::chrono::system_clock::to_time_t(now);
+    auto parts = std::localtime(&now_c);
+    auto year = std::to_string(1900 + parts->tm_year);
+    auto month = std::to_string(1 + parts->tm_mon);
+    auto day = std::to_string(parts->tm_mday);
+    auto hour = std::to_string(parts->tm_hour);
+    auto minute = std::to_string(parts->tm_min);
+    auto second = std::to_string(parts->tm_sec);
+    return fileName.append("_").append(year).append("_").append(month)
+            .append("_").append(day).append("_").append(hour)
+            .append("_").append(minute).append("_").append(second).append(".txt");
+}
+
+void PeaUtils::saveLogsToFile(std::vector<std::string> logs, std::string method, std::string matrix) {
+    std::string fileName = generateRandomFileName(method, matrix);
     std::fstream is;
     is.open(fileName, std::ios::out);
     for (auto &item: logs) {

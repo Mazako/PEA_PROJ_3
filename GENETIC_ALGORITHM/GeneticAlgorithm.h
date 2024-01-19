@@ -9,10 +9,12 @@
 class GeneticAlgorithm {
     static std::vector<GeneticPath*> calculateInitialPopulation(TspMatrix *matrix, int size);
     static std::vector<GeneticPath*> rankBasedSelection(std::vector<GeneticPath*> &population, TspMatrix* matrix, int size);
-    static GeneticPath * mutate(const std::vector<GeneticPath*>& parents, TspMatrix* matrix);
+    static void mutate(const std::vector<GeneticPath*>& parents, TspMatrix* matrix);
 public:
     static GeneticPath *orderCrossover(GeneticPath *parent1, GeneticPath *parent2, TspMatrix *matrix);
-    static ShortestPathResults* solve(TspMatrix* matrix, long timeInSeconds);
+    static GeneticPath *partiallyMatchedCrossover(GeneticPath *parent1, GeneticPath *parent2, TspMatrix *matrix);
+    static ShortestPathResults *solve(TspMatrix *matrix, long timeInSeconds, int populationSize, std::string method);
+
 };
 
 
