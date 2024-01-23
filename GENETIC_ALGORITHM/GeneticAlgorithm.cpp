@@ -49,24 +49,23 @@ ShortestPathResults *GeneticAlgorithm::solve(TspMatrix *matrix, long timeInSecon
             }
         }
 
-//        int crossingNumber = (parentsSize * crossingFactor);
-        for (int i = 0; i < parentsSize; i++) {
-            for (int j = 0; j < parentsSize; j++) {
-                if (i != j && PeaUtils::randomFormalDouble() > crossingFactor) {
-                    auto p1 = parents[i];
-                    auto p2 = parents[j];
-                    GeneticPath* geneticPath;
-                    if (method == "OX") {
-                        geneticPath = orderCrossover(p1, p2, matrix);
-                    } else if (method == "PMX") {
-                        geneticPath = partiallyMatchedCrossover(p1, p2, matrix);
-                    } else {
-                        throw std::invalid_argument("Unknown crossing method");
-                    }
-                    changedElements.push_back(geneticPath);
-
-                }
+        int crossingNumber = (parentsSize * crossingFactor);
+        for (int i = 0; i < crossingNumber; i++) {
+            auto pair = PeaUtils::randomTwoInt(parentsSize);
+            while ((*crossed[pair.first] && *crossed[pair.second])) {
+                pair = PeaUtils::randomTwoInt(parentsSize);
             }
+            auto p1 = parents[pair.first];
+            auto p2 = parents[pair.second];
+            GeneticPath* geneticPath;
+            if (method == "OX") {
+                geneticPath = orderCrossover(p1, p2, matrix);
+            } else if (method == "PMX") {
+                geneticPath = partiallyMatchedCrossover(p1, p2, matrix);
+            } else {
+                throw std::invalid_argument("Unknown crossing method");
+            }
+            changedElements.push_back(geneticPath);
         }
 
         std::sort(changedElements.begin(), changedElements.end(), invertedPathComparator);
@@ -92,7 +91,7 @@ ShortestPathResults *GeneticAlgorithm::solve(TspMatrix *matrix, long timeInSecon
         if (parents[0]->getCost() < bestKnownSolution->getCost()) {
             delete bestKnownSolution;
             bestKnownSolution = parents[0]->copy();
-            cout << "HIT! " << bestKnownSolution->getCost() << endl;
+//            cout << "HIT! " << bestKnownSolution->getCost() << endl;
 
             std::string log;
             auto currentTime = std::chrono::high_resolution_clock::now();

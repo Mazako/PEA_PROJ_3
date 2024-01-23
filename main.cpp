@@ -19,10 +19,8 @@ int main(int argc, char *argv[]) {
 
         auto matrix = PeaUtils::readMatrixFromXmlFile(fileName);
         GeneticAlgorithm::solve(matrix, seconds, population, method);
-    }
 
-    auto matrix = PeaUtils::readMatrixFromXmlFile("../RESOURCES/ftv170.xml");
-    GeneticAlgorithm::solve(matrix, 240, 200, "PMX");
+    }
 }
 
 void oxTest() {
