@@ -13,7 +13,8 @@ class GeneticAlgorithm {
 public:
     static GeneticPath *orderCrossover(GeneticPath *parent1, GeneticPath *parent2, TspMatrix *matrix);
     static GeneticPath *partiallyMatchedCrossover(GeneticPath *parent1, GeneticPath *parent2, TspMatrix *matrix);
-    static ShortestPathResults *solve(TspMatrix *matrix, long timeInSeconds, int populationSize, std::string method);
+    static ShortestPathResults *solve(TspMatrix *matrix, long timeInSeconds, int populationSize, std::string method,
+                                      double crossingFactor, double mutationFactor);
 
 };
 

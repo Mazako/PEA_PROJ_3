@@ -5,7 +5,8 @@
 
 // method: OX, PMX
 ShortestPathResults *GeneticAlgorithm::solve(TspMatrix *matrix, long timeInSeconds, int populationSize,
-                                             std::string method) {
+                                             std::string method,
+                                             double crossingFactor, double mutationFactor) {
     using std::cout;
     using std::endl;
     std::vector<std::string> logs;
@@ -18,8 +19,6 @@ ShortestPathResults *GeneticAlgorithm::solve(TspMatrix *matrix, long timeInSecon
         return a->getCost() > b->getCost();
     };
 
-    double mutationFactor = 0.01;
-    double crossingFactor = 0.8;
     double parentsFactor = 0.75;
     double mutationPopulationFactor = 0.125;
 

@@ -2,6 +2,8 @@
 #include "TspMatrix.h"
 #include "PeaUtils.h"
 #include "GeneticAlgorithm.h"
+#include "Menu.h"
+
 using std::cout;
 using std::endl;
 
@@ -18,11 +20,10 @@ int main(int argc, char *argv[]) {
         std::string method = argv[4];
 
         auto matrix = PeaUtils::readMatrixFromXmlFile(fileName);
-        GeneticAlgorithm::solve(matrix, seconds, population, method);
+        GeneticAlgorithm::solve(matrix, seconds, population, method, 0.8, 0.01);
+    } else {
+        Menu().start();
     }
-    auto matrix = PeaUtils::readMatrixFromXmlFile("../RESOURCES/ftv170.xml");
-    GeneticAlgorithm::solve(matrix, 120, 1000, "OX");
-//    pmxTest();
 }
 
 void oxTest() {

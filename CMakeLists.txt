@@ -8,6 +8,7 @@ include_directories(PEA_UTILS
         GENETIC_ALGORITHM
         GENETIC_ALGORITHM/GENETIC_PATH
         TSP_MATRIX
+        MENU
         pugixml-1.14/src)
 
 
@@ -22,4 +23,4 @@ add_executable(PEA_PROJ_3 main.cpp
         GENETIC_ALGORITHM/GeneticAlgorithm.cpp
         GENETIC_ALGORITHM/GeneticAlgorithm.h
         GENETIC_ALGORITHM/GENETIC_PATH/GeneticPath.cpp
-        GENETIC_ALGORITHM/GENETIC_PATH/GeneticPath.h)
+        GENETIC_ALGORITHM/GENETIC_PATH/GeneticPath.h MENU/Menu.cpp MENU/Menu.h)
