@@ -7,10 +7,6 @@
 using std::cout;
 using std::endl;
 
-void oxTest();
-
-void pmxTest();
-
 int main(int argc, char *argv[]) {
     //FILENAME - SECONDS - POPULATION - METHOD
     if (argc > 1) {
@@ -24,34 +20,4 @@ int main(int argc, char *argv[]) {
     } else {
         Menu().start();
     }
-}
-
-void oxTest() {
-    auto matrix = PeaUtils::generateRandomTSPInstance(6);
-    int arr1[] = {1, 2, 3, 4, 5, 6};
-    int arr2[] = {5, 1, 3, 6, 2, 4};
-    for (int i = 0; i < 6; i++) {
-        arr1[i]--;
-        arr2[i]--;
-    }
-    auto parent1 = new GeneticPath(6, arr1, 0);
-    auto parent2 = new GeneticPath(6, arr2, 0);
-    auto result = GeneticAlgorithm::orderCrossover(parent1, parent2, matrix);
-    cout << PeaUtils::arrayToString(6, result->getArray());
-
-}
-
-void pmxTest() {
-    auto matrix = PeaUtils::generateRandomTSPInstance(6);
-    int arr1[] = {1, 2, 3, 4, 5, 6};
-    int arr2[] = {5, 1, 3, 6, 2, 4};
-    for (int i = 0; i < 6; i++) {
-        arr1[i]--;
-        arr2[i]--;
-    }
-    auto parent1 = new GeneticPath(6, arr1, 0);
-    auto parent2 = new GeneticPath(6, arr2, 0);
-    auto result = GeneticAlgorithm::partiallyMatchedCrossover(parent1, parent2, matrix);
-    cout << PeaUtils::arrayToString(6, result->getArray());
-
 }

@@ -1,24 +1,20 @@
 #ifndef PEA_PROJ_1_PEAUTILS_H
 #define PEA_PROJ_1_PEAUTILS_H
 
-#include <string>
-#include <random>
-#include <functional>
-#include <fstream>
-#include <chrono>
-#include "TspMatrix.h"
 #include "ShortestPathResults.h"
+#include "TspMatrix.h"
+#include <chrono>
+#include <functional>
+#include <string>
 
-class PeaUtils {
-private:
+class PeaUtils
+{
     PeaUtils();
 
 public:
     static void swap(int i, int j, int* array);
 
     static int* copyArray(int n, const int* array);
-
-    static int** copyMatrix(int n, int** matrix);
 
     static int minimum(int n, const int* array);
 
@@ -40,55 +36,47 @@ public:
 
     static TspMatrix* generateRandomTSPInstance(int n);
 
-    static std::string matrixToString(const TspMatrix* tspMatrix);
+    static TspMatrix readMatrixFromFile(const std::string& filename);
 
-    static std::string arrayToString(int n, int* arr);
+    static TspMatrix readMatrixFromAtspFile(const std::string& filename);
 
-    static TspMatrix* readMatrixFromFile(const std::string& filename);
-
-    static TspMatrix * readMatrixFromAtspFile(const std::string& filename);
-
-    static TspMatrix* readMatrixFromXmlFile(const std::string& filename);
+    static TspMatrix readMatrixFromXmlFile(const std::string& filename);
 
     static int factorial(int n);
 
-    static long double calculateAvgTime(int resultCount, ShortestPathResults** results);
+    static long double calculateAvgTime(int resultCount,
+                                        ShortestPathResults** results);
 
-    static long double calculateStandardDeviation(int resultCount, ShortestPathResults** results, long double avg);
+    static long double calculateStandardDeviation(int resultCount,
+                                                  ShortestPathResults** results,
+                                                  long double avg);
 
-    static long double calculateSuccessRate(int resultCount, ShortestPathResults** results);
+    static long double calculateSuccessRate(int resultCount,
+                                            ShortestPathResults** results);
 
-    static std::vector<int> subtractVectors(std::vector<int>& v1, std::vector<int>& v2);
+    static std::vector<int> subtractVectors(std::vector<int>& v1,
+                                            std::vector<int>& v2);
 
-    static double calculateAverage(const std::vector<long long int> &vec);
+    static double calculateAverage(const std::vector<long long int>& vec);
 
     static int** generateEmptyMatrix(int n);
 
-    static std::string saveResultsToFile(int n, int *path, std::string matrixName, std::string methodPrefix);
+    static std::string saveResultsToFile(int n, const std::vector<int>& path,
+                                         const std::string& matrixName,
+                                         const std::string& methodPrefix);
 
-    static std::string generateRandomFileName(std::string method, std::string matrixName);
+    static std::string
+    PeaUtils::generateRandomFileName(const std::string& method,
+                                     const std::string& matrixName);
 
-    static void saveLogsToFile(std::vector<std::string> logs, std::string method, std::string matrix);
+    static void saveLogsToFile(const std::vector<std::string>& logs,
+                               const std::string& method,
+                               const std::string& matrix);
 
-    static long long readPathAndCalculateCost(TspMatrix* matrix, std::string filename);
+    static long long readPathAndCalculateCost(const TspMatrix& matrix,
+                                              const std::string& filename);
 
-    static int* generateRandomPath(int N) {
-        std::vector<int> path(N);
-        for (int i = 0; i < N; ++i) {
-            path[i] = i;
-        }
-
-        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-
-        shuffle(path.begin(), path.end(), std::default_random_engine(seed));
-
-        int* arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = path[i];
-        }
-        return arr;
-    }
+    static std::vector<int> generateRandomPath(const int N);
 };
 
-
-#endif //PEA_PROJ_1_PEAUTILS_H
+#endif // PEA_PROJ_1_PEAUTILS_H

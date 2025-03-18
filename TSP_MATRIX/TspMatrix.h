@@ -1,29 +1,29 @@
 #ifndef PEA_PROJ_1_TSPMATRIX_H
 #define PEA_PROJ_1_TSPMATRIX_H
 
+#include <memory>
 #include <string>
+#include <vector>
 
-class TspMatrix {
+class TspMatrix
+{
     int n;
-    int** matrix;
+    std::unique_ptr<std::unique_ptr<int[]>[]> matrix;
     std::string name;
-
 public:
-    TspMatrix(int n, int** matrix, std::string name);
+    TspMatrix(int n, std::unique_ptr<std::unique_ptr<int[]>[]> matrix, std::string name);
 
-    TspMatrix(int n, int** matrix);
+    TspMatrix(int n, std::unique_ptr<std::unique_ptr<int[]>[]> matrix);
 
-    ~TspMatrix();
+    [[nodiscard]] int getN() const;
 
-    int getN() const;
+    [[nodiscard]] std::string toString() const;
 
-    int** getMatrices() const;
+    [[nodiscard]] std::string getName() const;
 
-    std::string getName() const;
+    [[nodiscard]] long long int calculateCost(const std::vector<int> &path) const;
 
-    long long int calculateCost(const int* path);
-
-    unsigned long long int calculateCostThatExcludeZero(const int* path);
+    [[nodiscard]] unsigned long long int calculateCostThatExcludeZero(const std::vector<int> &path) const;
 };
 
 

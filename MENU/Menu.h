@@ -1,15 +1,17 @@
 #ifndef PEA_PROJ_3_MENU_H
 #define PEA_PROJ_3_MENU_H
 
-
-#include <string>
 #include "TspMatrix.h"
+#include <string>
 
-class Menu {
+#include <optional>
+
+class Menu
+{
     double mutationFactor = 0.01;
     double crossingFactor = 0.8;
     std::string crossingMode = "OX";
-    TspMatrix* matrix = nullptr;
+    std::optional<TspMatrix> matrix;
     long maxSecondsTime = 120;
     int populationSize = 200;
 
@@ -24,8 +26,6 @@ class Menu {
 
 public:
     void start();
-
-
 };
 
 

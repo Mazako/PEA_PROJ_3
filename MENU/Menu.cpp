@@ -1,25 +1,30 @@
 #include "Menu.h"
-#include "PeaUtils.h"
 #include "GeneticAlgorithm.h"
+#include "PeaUtils.h"
 #include "ShortestPathResults.h"
 #include <iostream>
 
+using std::cin;
 using std::cout;
 using std::endl;
-using std::cin;
 
-void Menu::start() {
+void Menu::start()
+{
     bool program = true;
     std::string option;
     cout << "Pea, zadanie 3" << endl;
     cout << "Autor: Michal Maziarz (263913)" << endl;
-    while (program) {
-        for (int i = 0; i < 4; i++) {
+    while (program)
+    {
+        for (int i = 0; i < 4; i++)
+        {
             cout << endl;
         }
         cout << "Macierz: " << (!matrix ? "BRAK" : matrix->getName()) << endl;
         cout << "Aktualny operator krzyzowania: " << crossingMode << endl;
-        cout << "(wsp mutacji, wsp krzyzowania, populacja, czas) = " << "(" << mutationFactor << ", " << crossingFactor << ", " << populationSize << ", " << maxSecondsTime << ")" << endl;
+        cout << "(wsp mutacji, wsp krzyzowania, populacja, czas) = " << "("
+            << mutationFactor << ", " << crossingFactor << ", " << populationSize
+            << ", " << maxSecondsTime << ")" << endl;
         cout << "1) Wczytaj macierz z pliku" << endl;
         cout << "2) Wybierz wspolczynnik krzyzowania" << endl;
         cout << "3) Wybierz wspolczynnik mutacji" << endl;
@@ -31,86 +36,113 @@ void Menu::start() {
         cout << "0) Zakoncz program" << endl;
         cout << "Wybierz opcje: ";
         std::getline(std::cin, option);
-        if (option == "1") {
+        if (option == "1")
+        {
             readMatrix();
-        } else if (option == "2") {
+        }
+        else if (option == "2")
+        {
             setCrossingFactor();
-        } else if (option == "3") {
+        }
+        else if (option == "3")
+        {
             setMutationFactor();
-        } else if (option == "4") {
+        }
+        else if (option == "4")
+        {
             setPopulationSize();
-        } else if (option == "5") {
+        }
+        else if (option == "5")
+        {
             setMaxTime();
-        } else if (option == "6") {
+        }
+        else if (option == "6")
+        {
             performGA();
-        } else if (option == "7") {
+        }
+        else if (option == "7")
+        {
             readResultFileAndCalcPath();
-        } else if (option == "8") {
+        }
+        else if (option == "8")
+        {
             changeCrossingMode();
-        } else if (option == "0") {
+        }
+        else if (option == "0")
+        {
             program = false;
-        } else {
+        }
+        else
+        {
             cout << "Nie ma takiej opcji" << endl;
         }
     }
 }
 
-void Menu::readMatrix() {
+void Menu::readMatrix()
+{
     std::string path;
     std::string option;
     cout << "1) Plik .atsp" << endl;
     cout << "2) Plik .xml" << endl;
     cout << "Wybierz opcje: ";
     std::getline(cin, option);
-    if (option != "1" && option != "2") {
+    if (option != "1" && option != "2")
+    {
         cout << "Nie ma takiej opcji.";
         return;
     }
     cout << "Podaj sciezke do pliku: ";
     std::getline(std::cin, path);
-    try {
-        TspMatrix* matrix;
-        if (option == "1") {
-            matrix = PeaUtils::readMatrixFromAtspFile(path);
-        } else {
-            matrix = PeaUtils::readMatrixFromXmlFile(path);
+    try
+    {
+        if (option == "1")
+        {
+            matrix.emplace(PeaUtils::readMatrixFromAtspFile(path));
         }
-        delete this->matrix;
-        this->matrix = matrix;
-    } catch (std::exception& e) {
+        else
+        {
+            matrix.emplace(PeaUtils::readMatrixFromXmlFile(path));
+        }
+    }
+    catch (std::exception& _)
+    {
         cout << "Problem z wczytaniem pliku" << endl;
     }
-
 }
 
-void Menu::setMutationFactor() {
+void Menu::setMutationFactor()
+{
     cout << "Podaj wartosc: ";
     cin >> mutationFactor;
     getchar();
 }
 
-void Menu::setCrossingFactor() {
+void Menu::setCrossingFactor()
+{
     cout << "Podaj wartosc: ";
     cin >> crossingFactor;
     getchar();
 }
 
-void Menu::setMaxTime() {
+void Menu::setMaxTime()
+{
     cout << "Podaj wartosc: ";
     cin >> maxSecondsTime;
     getchar();
-
 }
 
-void Menu::setPopulationSize() {
+void Menu::setPopulationSize()
+{
     cout << "Podaj wartosc: ";
     cin >> populationSize;
     getchar();
-
 }
 
-void Menu::readResultFileAndCalcPath() {
-    if (matrix == nullptr) {
+void Menu::readResultFileAndCalcPath()
+{
+    if (!matrix.has_value())
+    {
         cout << "Wybierz macierz!" << endl;
         return;
     }
@@ -118,30 +150,40 @@ void Menu::readResultFileAndCalcPath() {
     std::string option;
     cout << "Podaj sciezke do pliku: ";
     std::getline(std::cin, path);
-    try {
-        auto result = PeaUtils::readPathAndCalculateCost(matrix, path);
+    try
+    {
+        const auto result = PeaUtils::readPathAndCalculateCost(matrix.value(), path);
         cout << "Wynik: " << result << endl;
-    } catch (std::exception& e) {
+    }
+    catch (std::exception& e)
+    {
         cout << "Problem z wczytaniem pliku" << endl;
     }
 }
 
-void Menu::performGA() {
-    if (matrix == nullptr) {
+void Menu::performGA()
+{
+    if (!matrix.has_value())
+    {
         cout << "Wybierz macierz!" << endl;
         return;
     }
-    auto results = GeneticAlgorithm::solve(matrix, maxSecondsTime, populationSize, crossingMode, crossingFactor, mutationFactor);
-    cout << results->toString() << endl;
-    cout << "Zapisano sciezke rozwiazania w pliku: " << results->getFilePath() << endl;
-    delete results;
-
+    auto results =
+        GeneticAlgorithm::solve(matrix.value(), maxSecondsTime, populationSize,
+                                crossingMode, crossingFactor, mutationFactor);
+    cout << results.toString() << endl;
+    cout << "Zapisano sciezke rozwiazania w pliku: " << results.getFilePath()
+        << endl;
 }
 
-void Menu::changeCrossingMode() {
-    if (crossingMode == "OX") {
+void Menu::changeCrossingMode()
+{
+    if (crossingMode == "OX")
+    {
         crossingMode = "PMX";
-    } else {
+    }
+    else
+    {
         crossingMode = "OX";
     }
 }

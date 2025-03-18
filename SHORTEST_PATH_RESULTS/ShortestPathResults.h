@@ -1,35 +1,35 @@
 #ifndef PEA_PROJ_1_SHORTESTPATHRESULTS_H
 #define PEA_PROJ_1_SHORTESTPATHRESULTS_H
 #include <string>
+#include <vector>
 
-class ShortestPathResults {
+class ShortestPathResults
+{
     bool noTimeCause;
     unsigned long long int cost;
-    int* path;
+    std::vector<int> path;
     int n;
     long long secondsTime;
     std::string resultsPath;
 
 public:
-    ShortestPathResults(unsigned long long int cost, int n, int* path,
-                        long long secondsTime, bool noTimeCause, std::string resultsPath);
+    ShortestPathResults(unsigned long long int cost, int n, std::vector<int> path,
+                        long long secondsTime, bool noTimeCause,
+                        std::string resultsPath);
 
-    ~ShortestPathResults();
+    [[nodiscard]] std::string toString() const;
 
-    std::string toString();
+    [[nodiscard]] bool isNoTimeCause() const;
 
-    bool isNoTimeCause() const;
+    [[nodiscard]] unsigned long long int getCost() const;
 
-    unsigned long long int getCost() const;
+    [[nodiscard]] std::vector<int> getPath() const;
 
-    int* getPath() const;
+    [[nodiscard]] int getN() const;
 
-    int getN() const;
-
-    long long int getSecondsTime() const;
+    [[nodiscard]] long long int getSecondsTime() const;
 
     std::string getFilePath();
 };
 
-
-#endif //PEA_PROJ_1_SHORTESTPATHRESULTS_H
+#endif // PEA_PROJ_1_SHORTESTPATHRESULTS_H

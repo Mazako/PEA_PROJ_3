@@ -1,25 +1,25 @@
 #ifndef PEA_PROJ_3_GENETICPATH_H
 #define PEA_PROJ_3_GENETICPATH_H
+#include <vector>
 
-
-class GeneticPath {
+class GeneticPath
+{
     int n;
-    int* array;
+    std::vector<int> vec;
     long long cost;
+
 public:
-    GeneticPath(int n, int *array, long long int cost);
-    ~GeneticPath();
+    GeneticPath(int n, std::vector<int> vec, long long int cost);
 
-    int *getArray() const;
+    [[nodiscard]] std::vector<int> getArray() const;
 
-    long long int getCost() const;
+    [[nodiscard]] unsigned long long int getCost() const;
+
+    GeneticPath copy();
 
     void setCost(long long int cost);
 
-    GeneticPath* copy();
-
-    int getN() const;
+    [[nodiscard]] int getN() const;
 };
 
-
-#endif //PEA_PROJ_3_GENETICPATH_H
+#endif // PEA_PROJ_3_GENETICPATH_H

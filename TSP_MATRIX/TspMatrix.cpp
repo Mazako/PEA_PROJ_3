@@ -1,39 +1,45 @@
-#include <iostream>
 #include "TspMatrix.h"
+#include <iostream>
+#include <utility>
+#include <vector>
 
-int TspMatrix::getN() const {
-    return n;
+TspMatrix::TspMatrix(const int n,
+                     std::unique_ptr<std::unique_ptr<int[]>[]> matrix)
+    : n(n), matrix(std::move(matrix)), name("NONE")
+{
 }
 
-int** TspMatrix::getMatrices() const {
-    return matrix;
+TspMatrix::TspMatrix(const int n,
+                     std::unique_ptr<std::unique_ptr<int[]>[]> matrix,
+                     std::string name)
+    : n(n), matrix(std::move(matrix)), name(std::move(name))
+{
 }
 
-TspMatrix::~TspMatrix() {
-    for (int i = 0; i < this->n; i++) {
-        delete[] this->matrix[i];
+int TspMatrix::getN() const { return n; }
+
+std::string TspMatrix::toString() const
+{
+    std::string mat;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            mat.append(std::to_string(matrix[i][j])).append(" ");
+        }
+        mat.append("\n");
     }
-    delete[] this->matrix;
+    return mat;
 }
 
-TspMatrix::TspMatrix(int n, int **matrix) {
-    this->n = n;
-    this->matrix = matrix;
-    this->name = "NONE";
-}
-
-TspMatrix::TspMatrix(int n, int** matrix, std::string name) {
-    this->n = n;
-    this->matrix = matrix;
-    this->name = name;
-}
-
-long long int TspMatrix::calculateCost(const int* path) {
-    int first = path[0];
+long long int TspMatrix::calculateCost(const std::vector<int>& path) const
+{
+    const int first = path[0];
     int v1 = path[0];
     int v2;
     long long int totalCost = 0;
-    for (int i = 1; i < this->n; i++) {
+    for (int i = 1; i < this->n; i++)
+    {
         v2 = path[i];
         totalCost += matrix[v1][v2];
         v1 = v2;
@@ -42,19 +48,19 @@ long long int TspMatrix::calculateCost(const int* path) {
     return totalCost;
 }
 
-unsigned long long TspMatrix::calculateCostThatExcludeZero(const int* path) {
+unsigned long long
+TspMatrix::calculateCostThatExcludeZero(const std::vector<int>& path) const
+{
     unsigned long long totalCost = matrix[0][path[0]];
     totalCost += matrix[path[n - 2]][0];
     int v1 = path[0];
-    int v2;
-    for (int i = 1; i < n - 1; i++) {
-        v2 = path[i];
+    for (int i = 1; i < n - 1; i++)
+    {
+        const int v2 = path[i];
         totalCost += matrix[v1][v2];
         v1 = v2;
     }
     return totalCost;
 }
 
-std::string TspMatrix::getName() const {
-    return name;
-}
+std::string TspMatrix::getName() const { return name; }
